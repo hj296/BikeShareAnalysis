@@ -1,0 +1,224 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library("lubridate")
+library("tidyverse")
+library("ggplot2")
+```
+
+```{r}
+#Loading Data into the variables - 
+q2_2019 <- read_csv("Divvy_Trips_2019_Q2.csv")
+q3_2019 <- read_csv("Divvy_Trips_2019_Q3.csv")
+q4_2019 <- read_csv("Divvy_Trips_2019_Q4.csv")
+q1_2020 <- read_csv("Divvy_Trips_2020_Q1.csv")
+
+```
+
+```{r}
+#Checking column name so that we merge all the data into a single variable
+print(colnames(q2_2019))
+print(colnames(q3_2019))
+print(colnames(q4_2019))
+print(colnames(q1_2020))
+
+```
+```{r}
+#As we can see the column names in q1_2020 & q4_2019 are different from q2_2019 & q3_2019, so we will try to make all the column names uniform,across all the variables, so that we can merge the data.
+#Making uniform with column names in q1_2020
+
+#Changing Column names to q4_2019
+(q4_2019 <- rename(q4_2019
+                   ,ride_id = trip_id
+                   ,rideable_type = bikeid 
+                   ,started_at = start_time  
+                   ,ended_at = end_time  
+                   ,start_station_name = from_station_name 
+                   ,start_station_id = from_station_id 
+                   ,end_station_name = to_station_name 
+                   ,end_station_id = to_station_id 
+                   ,member_casual = usertype))
+
+#Removing certain columns as they are not useful for analysis.
+q1_2020 <- subset (q1_2020, select = -c (start_lat, start_lng, end_lat, end_lng))
+
+#Changing column names in q3_2019
+(q3_2019 <- rename(q3_2019
+                   ,ride_id = trip_id
+                   ,rideable_type = bikeid 
+                   ,started_at = start_time  
+                   ,ended_at = end_time  
+                   ,start_station_name = from_station_name 
+                   ,start_station_id = from_station_id 
+                   ,end_station_name = to_station_name 
+                   ,end_station_id = to_station_id 
+                   ,member_casual = usertype))
+#Changing column names in q2_2019
+
+(q2_2019 <- rename(q2_2019
+                   ,ride_id = "01 - Rental Details Rental ID"
+                   ,rideable_type = "01 - Rental Details Bike ID" 
+                   ,started_at = "01 - Rental Details Local Start Time"  
+                   ,ended_at = "01 - Rental Details Local End Time"  
+                   ,start_station_name = "03 - Rental Start Station Name" 
+                   ,start_station_id = "03 - Rental Start Station ID"
+                   ,end_station_name = "02 - Rental End Station Name" 
+                   ,end_station_id = "02 - Rental End Station ID"
+                   ,member_casual = "User Type"))
+```
+
+```{r}
+
+# Inspecting data-types of every column.
+#str(q1_2020)
+#str(q4_2019)
+#str(q3_2019)
+#str(q2_2019)
+
+#Changing data type of ride_id & rideable_type to make it consistent with q1_2020.
+# Convert ride_id and rideable_type to character so that they can stack correctly
+q4_2019 <-  mutate(q4_2019, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)) 
+q3_2019 <-  mutate(q3_2019, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)) 
+q2_2019 <-  mutate(q2_2019, ride_id = as.character(ride_id)
+                   ,rideable_type = as.character(rideable_type)) 
+
+
+```
+
+
+```{r}
+
+# Stack individual quarter's data frames into one big data frame
+combined_df <- bind_rows(q2_2019, q3_2019, q4_2019, q1_2020)
+
+combined_df <- combined_df %>%  
+  select(-c("01 - Rental Details Duration In Seconds Uncapped", "05 - Member Details Member Birthday Year", "Member Gender", tripduration,gender,birthyear))
+
+
+
+```
+
+```{r}
+#List of column names
+colnames(combined_df)
+
+#How many rows are in data frame?
+nrow(combined_df) 
+
+#Dimensions of the data frame?
+dim(combined_df)  
+
+#See the first 6 rows of data frame.
+head(combined_df)  
+
+#See list of columns and data types (numeric, character, etc)
+str(combined_df)  
+
+#Statistical summary of data. Mainly for numerics
+summary(combined_df)  
+
+
+
+```
+
+```{r}
+table(combined_df$member_casual)
+```
+```{r}
+
+combined_df <-  combined_df %>% 
+  mutate(member_casual = recode(member_casual
+                           ,"Subscriber" = "member"
+                           ,"Customer" = "casual"))
+
+```
+
+
+```{r}
+table(combined_df$member_casual)
+```
+```{r}
+#The default format is yyyy-mm-dd
+combined_df$date <- as.Date(combined_df$started_at) 
+combined_df$month <- format(as.Date(combined_df$date), "%m")
+combined_df$day <- format(as.Date(combined_df$date), "%d")
+combined_df$year <- format(as.Date(combined_df$date), "%Y")
+combined_df$day_of_week <- format(as.Date(combined_df$date), "%A")
+
+combined_df$ride_length <- difftime(combined_df$ended_at,combined_df$started_at)
+#ride_length is in seconds.
+
+```
+
+```{r}
+ 
+```
+```{r}
+# Converting data type of "ride_length"
+combined_df$ride_length <- as.numeric(as.character(combined_df$ride_length))
+is.numeric(combined_df$ride_length)
+
+```
+```{r}
+# The dataframe includes a few hundred entries when bikes were taken out of docks and checked for quality by Divvy or ride_length was negative
+
+combined_df_v2 <- combined_df[!(combined_df$start_station_name == "HQ QR" | combined_df$ride_length<0),]
+
+```
+
+
+```{r}
+# STEP 4: CONDUCT DESCRIPTIVE ANALYSIS
+#=====================================
+# Descriptive analysis on ride_length (all figures in seconds)
+mean(combined_df_v2$ride_length) #straight average (total ride length / rides)
+median(combined_df_v2$ride_length) #midpoint number in the ascending array of ride lengths
+max(combined_df_v2$ride_length) #longest ride
+min(combined_df_v2$ride_length) #shortest ride
+
+```
+```{r}
+# Notice that the days of the week are out of order. Let's fix that.
+combined_df_v2$day_of_week <- ordered(combined_df_v2$day_of_week, levels=c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+```
+
+
+```{r}
+str(combined_df_v2)
+
+summary(combined_df_v2$ride_length)
+```
+
+```{r}
+#Comparing Casual riders & Annual Members.
+aggregate(combined_df_v2$ride_length ~ combined_df_v2$member_casual, FUN = mean)
+aggregate(combined_df_v2$ride_length ~ combined_df_v2$member_casual, FUN = median)
+aggregate(combined_df_v2$ride_length ~ combined_df_v2$member_casual, FUN = max)
+aggregate(combined_df_v2$ride_length ~ combined_df_v2$member_casual, FUN = min)
+
+```
+```{r}
+#remove(combined_df,q1_2020,q2_2019,q3_2019,q4_2019)
+#Write the below code in console, or else it might use too much of computing power.
+
+#write.csv(combined_df_v2,file = '~/Desktop/all_df.csv')
+
+#remove(combined_df_v2)
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
