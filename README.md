@@ -1,6 +1,8 @@
 # BikeShareAnalysis
 ## Google CapStone Project
 
+![Cyclistic](/assets/cylistic_bike.jpg)
+
 About
 
 Objective - To get a clear understanding of How do annual members and casual riders use Cyclistic bikes differently. Dataset can be found ![here](https://divvy-tripdata.s3.amazonaws.com/index.html)
