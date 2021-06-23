@@ -17,13 +17,10 @@ Q.3) Cleaning & Manipulating the dataset for analysis?
 
 Ans – 3) The dataset contained 12 columns, which included numeric & non-numeric parameters. Two more columns were derived later to calculate the total length of each ride a customer took & the other column determined which day of the week it is. The dataset was cleaned using R, which included renaming columns, changing data-types of some features etc..
 
-
-
 ### Summary of Analysis
 
 Q.1) How do annual members & casual riders use Cyclistic bikes differently?
 
-Ans – 1)
 • The average trip length for customers who are annual members is significantly low when compared with casual riders.
 
 • The frequency of the trips made by customers who are annual members is much higher than that of casual riders.
