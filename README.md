@@ -5,7 +5,7 @@
 
 ### About
 
-Objective - To get a clear understanding of how do annual members and casual riders use Cyclistic bikes differently. Dataset can be found ![here](https://divvy-tripdata.s3.amazonaws.com/index.html)
+Objective - To get a clear understanding of how do annual members and casual riders use Cyclistic bikes differently. Dataset can be found ![here]( https://divvy-tripdata.s3.amazonaws.com/index.html )
 
 Q.1) What business tasks need to be accomplished?
 
