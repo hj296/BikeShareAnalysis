@@ -22,8 +22,5 @@ Ans – 1)
 • The average trip length for customers who are annual members is significantly low when compared with casual riders.
 • The frequency of the trips made by customers who are annual members is much higher than that of casual riders.
 
-
-
-Note: The three phases here refer to the pre-pandemic which is the month of February, During pandemic which is Month of March and the later stage which is month of December. Dataset can be found here.
-
-Thank You.
+# Visualization - 
+After cleaning the data-set, the visualizations have been performed in Tableau and visualizations can be found ![here](https://public.tableau.com/app/profile/heem.joshi/viz/BikeShareAnalysis_16242234503060/CyclisticBikeShare-CaseStudy)
