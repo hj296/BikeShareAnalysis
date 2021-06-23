@@ -24,8 +24,8 @@ Ans – 3) The dataset contained 12 columns, which included numeric & non-numeri
 Q.1) How do annual members & casual riders use Cyclistic bikes differently?
 
 Ans – 1)
-
 • The average trip length for customers who are annual members is significantly low when compared with casual riders.
+
 • The frequency of the trips made by customers who are annual members is much higher than that of casual riders.
 
 # Visualization - 
