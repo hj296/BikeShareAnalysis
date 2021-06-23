@@ -17,7 +17,7 @@ Ans – 2) We are using 12 months of cyclists’ data from Apr-2019 till Mar-202
 
 Q.3) Cleaning & Manipulating the dataset for analysis?
 
-Ans – 3) The dataset contained 12 columns, which included numeric & non-numeric parameters. Two more columns were derived later to calculate the total length of each ride a customer took & the other column determined which day of the week it is. The dataset was cleaned using R, which included renaming columns, changing data-types of some features etc..
+Ans – 3) The dataset contained 12 columns, which included numeric & non-numeric parameters. Two more columns were derived later to calculate the total length of each ride a customer took & the other column determined which day of the week it is. The dataset was cleaned using R, which included renaming columns, changing data-types of some features etc.
 
 ### Summary of Analysis
 
