@@ -28,6 +28,6 @@ Q.1) How do annual members & casual riders use Cyclistic bikes differently?
 
 # Visualization - 
 
-![Dashboard](/assets/dashboard.jpg)
+![Dashboard](/assets/dashboard.png)
 
 After cleaning the data-set, the visualizations have been performed in Tableau and visualizations can be found [here](https://public.tableau.com/app/profile/heem.joshi/viz/BikeShareAnalysis_16242234503060/CyclisticBikeShare-CaseStudy)
