@@ -1,5 +1,4 @@
 # BikeShareAnalysis
-## Google CapStone Project
 
 ![Cyclistic](/assets/cylistic_bike.jpg)
 
